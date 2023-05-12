@@ -72,7 +72,7 @@ function tick() {
     }
 
     if (bonusSpeed > 1) {
-        addOffline(-Math.abs(delta * (bonusSpeed - 1)));
+        addOffline(Math.abs(delta * (bonusSpeed - 1)));
     }
 
     if (refund) {
