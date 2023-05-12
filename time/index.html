@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="wap-font-scale" content="no">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta name="viewport"
+          content="viewport-fit=cover,width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <title>Kindle 时钟</title>
+    <link rel="stylesheet" href="font/qweather-icons.css">
+    <script type="text/javascript" src="rili.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 26px;
+        }
+
+        @font-face {
+            font-family: PUTHIAfont;
+            src: url("PUTHIAfont.ttf") format('truetype');
+        }
+
+        .time-font {
+            font-family: PUTHIAfont, Arial, sans-serif;
+        }
+
+        #app {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #date {
+            width: 100%;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        #chineseDate {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        #time {
+            width: 100%;
+            font-size: 8rem;
+            text-align: center;
+        }
+
+        .hr {
+            width: 100%;
+        }
+
+        hr {
+            line-height: 0;
+            margin: 20px;
+            padding: 0;
+            clear: both;
+            background: 0 0;
+            border-color: #2F4056 !important;
+            color: #2F4056 !important;
+            overflow: hidden;
+        }
+
+        #weather {
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        #weather-list {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .weather-item {
+            display: inline-block;
+            /*width: 150px;*/
+            min-width: 100px;
+        }
+
+        .weather-info {
+
+        }
+
+        .weather-info > div {
+            display: inline-block;
+        }
+
+        .weather-info-icon i {
+            font-size: 4rem;
+        }
+
+        .weather-info p {
+            margin: 5px 0;
+        }
+
+        .weather-info-temp {
+            font-size: 6rem;
+            margin: 0 20px;
+        }
+
+        #updateTime {
+            position: absolute;
+            font-size: 12px;
+            right: 20px;
+            display: none;
+        }
+
+        @media (min-width: 1400px) {
+            html {
+                background: #000;
+                color: #fff !important;
+                font-size: 28px;
+            }
+
+            #app {
+                margin-top: 0;
+            }
+
+            hr {
+                border-color: #222222 !important;
+            }
+        }
+    </style>
+    <script>
+        var Chinasfamous = ["穷且益坚，不坠青云之志。——王勃", "舍得一身剐，敢把皇帝拉下马。——《红楼梦》", "疑则勿用，用则不疑。——陈亮", "先天下之忧而忧，后天下之乐而乐。——范仲淹", "成人不自在，自在不成人。——罗大经", "鱼游于沸鼎之中，燕巢于飞幕之上。——丘迟", "风声雨声读书声声声入耳，家事国事天下事事事关心。——顾炎武", "受人滴水之恩，必当涌泉相报。", "海阔凭鱼跃，天高任鸟飞。——吴承恩", "春蚕到死丝方尽，人至期颐亦不休。一息尚存须努力，留作青年好范畴。——吴玉章", "性痴，则其志凝：故书痴者文必工，艺痴者技必良。——世之落拓而无成者，皆自谓不痴者也。——蒲松龄《阿宝》", "留得青山在，不怕没柴烧。——凌蒙初", "三更灯火五更鸡，正是男儿读书时。黑发不知勤学早，白首方悔读书迟。——颜真卿", "宁为太平犬，不作乱离人。——冯梦龙", "路是脚踏出来的，历史是人写出来的。人的每一步行动都在书写自己的历史。——吉鸿昌", "桃李不言，下自成蹊。——《史记》", "前门拒虎，后门进狼。——赵雪航", "人之所能，不能兼备，弃其所短，取其所长。", "人生的价值，即以其人对于当代所做的工作为尺度。——徐玮", "只要功夫深，铁杵磨成针。", "城门失火，殃及池鱼。——杜弼", "大鹏一日同风起，扶摇直上九万里。——李白", "泥沙俱下，鱼龙混杂。", "重赏之下，必有勇夫。", "贫不足羞，可羞是贫而无志。——吕坤", "志当存高远。——诸葛亮", "生当作人杰，死亦为鬼雄，至今思项羽，不肯过江东。——李清照", "千磨万击还坚韧，任尔东南西北风。——郑板桥《竹石》", "智者千虑，必有一失。", "道高一尺，魔高一丈。——《西游记》", "人过留名，雁过留声。", "周郎妙计安天下，赔了夫人又折兵。——《三国演义》", "读书以过目成诵为能，最是不济事。——郑板桥", "故立志者，为学之心也；为学者，立志之事也。——王阳明", "循序渐进，熟读而精思。——朱熹", "千里搭长棚，没有不散的筵席。——《红楼梦》", "非淡泊无以明志，非宁静无以致远。——诸葛亮", "此地无银三百两。", "金玉其外，败絮其中。", "燕雀安知鸿鹄之志哉！——陈涉", "善有善报，恶有恶报，不是不报，时辰未到。——元杂剧", "明日复明日，明日何其多？我生待明日，万事成蹉跎。——文嘉《明日歌》", "鞠躬尽瘁，死而后已。——诸葛亮", "亲者痛，仇者快。——朱浮", "姜太公钓鱼，愿者上钩。——《封神演义》", "放下屠刀，立地成佛。——彭大翼", "死猪不怕开水烫。", "君子喻于义，小人喻于利。——孔丘", "暮春三月，江南草长，杂花生树，群莺乱飞。——丘迟", "推赤心于天下，安反侧于万物。——丘迟", "磨刀不误砍柴工。", "书到用时方恨少。", "弃燕雀之小志，慕鸿鹄之高翔。——丘迟", "人生自古谁无死，留取丹心照汗青。——文天祥《过零丁洋》", "路遥知马力，日久见人心。——元杂剧", "一朝权在手，便来把令行。——朱湾", "忧劳可以兴国，逸豫可以亡身。——欧阳修", "千军易得，一将难求。——马致远", "久旱逢甘雨，他乡遇故知。", "公则生明，廉则生威。——朱舜水", "政通人和，百废俱兴。——范仲淹", "一登龙门，身价百倍。", "机关算尽太聪明，反误了卿卿性命。——《红楼梦》", "杀鸡焉用宰牛刀。", "不戚戚于贫贱，不汲汲于富贵。——陶渊明", "言者谆谆，听者藐藐。", "看文字须大段精彩看，耸起精神，竖起筋骨，不要困，如有刀剑在后一般。就一段中须要透，击其首则尾应，击其尾则首应，方始是。不可按册子便在，掩了册子便忘。——朱熹《朱子语类大全》", "嬉笑怒骂皆成文章。——黄庭坚", "盲人骑瞎马，夜半临深也。——刘义庆", "天变不足畏，祖宗不足法，人言不足恤。——王安石", "韩信将兵，多多益善。——《史记》", "三军可夺帅也，匹夫不可夺志也。——孔丘", "银样蜡枪头，中看不中用。——《西厢记》", "志不强者智不达。——墨翟", "天下兴亡，匹夫有责。——顾炎武", "但愿每次回忆，对生活都不感到负疚——郭小川", "临危受命，力挽狂澜于既倒。", "出污泥而不染，濯清涟而不妖。——周敦颐", "富贵不淫贫贱乐，男儿到此是豪雄。——程颢", "位卑未敢忘忧国。——陆游", "群贤毕至，少长咸集。——王羲之", "心病还须心药治，解铃还是系铃人。——《红楼梦》", "知无不言，言无不尽。——苏洵", "百足之虫，死而不僵。——曹炯", "人怕出名猪怕壮。", "丈夫有泪不轻弹，只因未到伤心处。——李开先", "勤学如春起之苗，不见其增，日有所长；辍学如磨刀之石，不见其损，日有所亏。", "壮心未与年俱老，死去犹能作鬼雄。——陆游", "巧妇难为无米之炊。——陆游", "醉翁意不在酒，在乎山水之间也。——欧阳修", "清贫，洁白朴素的生活，正是我们革命者能够战胜许多困难的地方！——方志敏", "书富如入海，百货皆有。人之精力，不能兼收尽取，但得春所欲求者尔。故愿学者每次作一意求之。——苏轼《东坡文集事略》", "精神不是万能的，但没有精神是万万不能的。", "只许州官放火，不许百姓点灯。——陆游", "常格不破，人才难得。——包拯", "一分耕耘，一分收获。", "天下大势，分久必合，合久必分。——《三国演义》", "日薄西山，气息奄奄，人命危浅，朝不虑夕。——李密", "不是东风压倒西风，就是西风压倒东风。——《红楼梦》", "风声雨声读书声声声入耳，家事国事天下事事事关心。——顾宪成", "燕雀戏藩柴，安识鸿鹄游。——曹植", "精诚所至，金石为开。——凌蒙初", "老骥伏枥，志在千里；烈士暮年，壮心不已。——曹操", "踏破铁鞋无觅处，得来全不费功夫。——冯梦龙", "酒香不怕巷子深。", "可望而不可即。——刘基", "后人哀之而不鉴之，亦使后人复哀后人也。——杜牧", "学贵精不贵博。……知得十件而都不到地，不如知得一件却到地也。——戴震《戴东原先生年谱》", "古之立大事者，不惟有超世之才，亦必有坚忍不拔之志。——苏轼(www.lz13.cn)", "单丝不成线，独木不成林。——曹雪芹", "蚍蜉撼大树，可笑不自量。——韩愈", "失之东隅，收之桑榆。——《史记》", "子系中山狼，得志便猖狂。——《红楼梦》", "明日复明日，明日何其多？日日待明日，万事成蹉跎。——文嘉", "打破沙锅问到底。——吴昌龄", "盛年不重来，一日难再晨。及时宜自勉，岁月不待人。——陶渊明", "千里之行，始于足下。——老子", "少年易学老难成，一寸光阴不可轻。——朱熹", "敏而好学，不耻下问。——孔子", "海内存知已，天涯若比邻。——王勃", "莫愁前路无知已，天下谁人不识君。——高适", "人生贵相知，何用金与钱。——李白", "天生我材必有用。——李白", "海纳百川有容乃大；壁立千仞无欲则刚。——林则徐", "穷则独善其身，达则兼济天下。——孟子", "名人名言，玉不琢、不成器，人不学、不知义。——《三字经》", "业精于勤，荒于嬉；行成于思，毁于随。——韩愈", "读书破万卷，下笔如有神。——杜甫", "路遥知马力，日久见人心。——《元曲选·争报恩》", "君子之交淡若水，小人之交甘若醴，君子淡以亲，小人甘以绝。——庄子", "学而不思则罔，思而不学则殆。——孔子", "一年之计在于春，一日之计在于晨。——萧绎", "三更灯火五更鸡，正是男儿读书时，黑发不知勤学早，白首方悔读书迟。——颜真卿", "莫等闲，白了少年头，空悲切。——岳飞", "桃花潭水深千尺，不及汪伦送我情。——李白", "少壮不努力，老大徒伤悲。——《汉乐府·长歌行》", "一寸光阴一寸金，寸金难买寸光阴。", "吾生也有涯，而知也无涯。——庄子", "纸上得来终觉浅，绝知此事要躬行。——陆游", "熟读唐诗三百首，不会作诗也会吟。——孙洙", "有志者，事竟成，破釜沉舟，百二秦关终属楚；苦心人，天不负，卧薪尝胆，三千越甲可吞吴。——蒲松龄", "学无止境。——荀子", "己所不欲，勿施于人。——孔子", "天将降大任于斯人也，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为，所以动心忍性，曾益其所不能。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "富贵不能淫，贫贱不能移，威武不能屈，此之谓大丈夫。——孟子", "业精于勤，荒于嬉；行成于思，毁于随。——韩愈", "鞠躬尽瘁，死而后已。——诸葛亮", "名人名言，同是天涯沦落人，相逢何必曾相识。——白居易", "人之相识，贵在相知，人之相知，贵在知心。——孟子", "书到用时方恨少，事非经过不知难。——陆游", "居安思危，思则有备，有备无患。——《左传》", "若要功夫深，铁杵磨成针。——曹学《蜀中广记·上川南道彭山县》", "仁者见仁，智者见智。——《易经·系辞上》", "仰不愧天，俯不愧人，内不愧心。——韩愈", "天下兴亡，匹夫有责。——顾炎武", "人无远虑，必有近忧。——孔子", "人的生命是有限的，可是为人民服务是无限的，我要把有限的生命投入到无限的为人民服务之中去！——雷锋", "与有肝胆人共事，从无字句处读书。——周恩来", "为中华之崛起而读书。——周恩来", "千淘万浪虽辛苦，吹尽黄沙始到金。——刘禹锡", "勿以恶小而为之，勿以善小而不为。——刘备", "天生我才必有用。——李白", "一日无书，百事荒废。——陈寿", "读书如饭，善吃饭者长精神，不善吃者生疾病。——章学诚", "天下兴亡，匹夫有责。——顾炎武", "人不可有傲气，但不可无傲骨。——徐悲鸿", "岂能尽如人意，但求无愧我心！——林则徐", "人生自古谁无死，留取丹心照汗青。——文天祥", "路漫漫其修远兮，吾将上下而求索。——屈原", "静以修身，俭以养德，非淡泊无以明志，非宁静无以致远。——诸葛亮", "吾生也有涯，而知也无涯。——庄子", "欲穷千里目，更上一层楼。——王之焕", "名人名言，天时不如地利，地利不如人和。——《孟子·公孙丑》", "人谁无过？过而能改，善莫大焉。——《论语》", "满招损，谦受益。——《尚书·大禹谟》", "由俭入奢易，由奢入俭难。——司马光", "读书有三到，谓心到，眼到，口到。——朱熹", "近朱者赤，近墨者黑。——付玄", "君子爱财，取之有道。——孔子", "三人行，必有我师焉，择其善者而从之，其不善者而改之。——孔子", "问渠哪得清如许，为有源头活水来。——朱熹", "长风破浪会有时，直挂云帆济沧海。——李白", "不积跬步，无以至千里；不积小流，无以成江海。——荀子", "鸟欲高飞先振翅，人求上进先读书。——李若禅", "少而好学，如日出之阳；壮而好学，如日中之光；志而好学，如炳烛之光。——刘向", "发奋识遍天下字，立志读尽人间书。——苏轼", "古之立大志者，不惟有超世之才，亦必有坚韧不拔之志。——苏轼", "生于忧患，死于安乐。——孟子", "书山有路勤为径，学海无涯苦作舟。——韩愈", "旧书不厌百回读，熟读精思子自知。——苏轼", "博观而约取，厚积而薄发。——苏轼", "非学无以广才，非志无以成学。——诸葛亮", "君子坦荡荡，小人长戚戚。——孔子", "时间就是生命，时间就是速度，时间就是力量。——郭沫若", "读过一本好书，像交了一个益友。——臧克家", "天行健，君子以自强不息。地势坤，君子以厚德载物。——《周易》", "盛年不重来，一日难再晨。及时当勉励，岁月不待人。——陶渊明", "三军可夺帅也，匹夫不可夺志也。——孔子", "书读百遍，其义自见。——陈寿", "路漫漫其修道远，吾将上下而求索。——屈原", "人生在勤，不索何获。——张衡", "天下事以难而废者十之一，以惰而废者十之九。——颜之推", "学必求其心得，业必贵其专精。——章学诚", "知之者不如好之者，好之者不如乐之者。——《论语·雍也》", "人非圣贤，孰能无过。——《训俗遗规》", "横眉冷对千夫指，俯首甘为孺子牛。——鲁迅", "时间就像海绵里的水，只要愿挤，总还是有的。——鲁迅", "时间就是生命，无端地空耗别人的时间，无异于谋财害命。——鲁迅", "哪里有天才，我是把别人喝咖啡的工夫都用在工作上了。——鲁迅", "一滴水，用显微镜看，也是一个大世界。——鲁迅", "生活的理想，就是为了理想的生活。——张闻天", "为中华之崛起而读书。——周恩来", "十年树木，百年树人。——《管子·权修》", "青，取之于蓝而青于蓝；冰，水为之而寒于水。——《荀子·劝学》", "尺有所短；寸有所长。物有所不足；智有所不明。——屈原《卜居》", "言必信，行必果。——《论语·子路》", "有志者事竟成。——《后汉书·耿列传》", "先天下之忧而忧，后天下之乐而乐。——范仲淹", "骐骥一跃，不能十步；驽马十驾，功在不舍；锲而舍之，朽木不折；锲而不舍，金石可镂。——荀子", "虚心使人进步，骄傲使人落后。——毛泽东", "世上无难事，只要肯登攀。——毛泽东", "世上本没有路，走的人多了，也便成了路。——鲁迅", "哀其不幸，怒其不争。——鲁迅", "我好像是一只牛，吃的是草，挤出的是牛奶。——鲁迅"];
+        /**
+         * 日期格式化
+         */
+        Date.prototype.Format = function (format) {
+            var d = this, o = {
+                "M+": d.getMonth() + 1, //月份
+                "d+": d.getDate(), //日
+                "H+": d.getHours(),  //小时
+                "m+": d.getMinutes(), //分
+                "s+": d.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds(), //毫秒
+                "w": ["日", "一", "二", "三", "四", "五", "六"][d.getDay()]
+            };
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (d.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(format)) {
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+                }
+            }
+            return format;
+        };
+
+        /**
+         * 获取浏览器参数
+         */
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return decodeURI(r[2]);
+            } else {
+                return null;
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="app">
+    <div id="date"></div>
+    <div id="chineseDate"></div>
+    <div id="time" class="time-font"></div>
+    <div class="hr">
+        <hr>
+    </div>
+    <div id="weather">
+        <div id="updateTime"><!--更新时间--></div>
+        <div class="weather-info">
+            <div class="weather-info-icon">
+                <i id="tempIcon"></i> <span id="tempText"><!--天气情况--></span>
+            </div>
+            <div class="weather-info-temp" id="temp" onclick="getWeather()"><!--当前温度--></div>
+            <div class="weather-info-air" onclick="showUpdateTime()">
+                <p id="cityName"><!--城市名称--></p>
+                <p>
+                    <span id="pm2p5"><!--PM2.5--></span>
+                    <span id="category"><!--空气质量--></span>
+                </p>
+                <p id="todayTemp"><!--最高最低温度--></p>
+            </div>
+        </div>
+        <div id="weather-list"></div>
+    </div>
+    <div style="padding: 20px 40px 0 40px;" onclick="switchChineseFamous()">
+        <i class="qi-100"></i>
+        <span id="chinasfamous"></span>
+    </div>
+</div>
+<script>
+    var dateFontSize = getUrlParam("fs");
+    if (dateFontSize) {
+        document.getElementsByTagName("html")[0].style.fontSize = dateFontSize + 'px';
+    }
+
+    // 处理时区
+    function getDate() {
+        var currTime = new Date();
+        var utc8DiffMinutes = currTime.getTimezoneOffset() + 480;
+        currTime.setMinutes(currTime.getMinutes() + utc8DiffMinutes);
+        return currTime;
+    }
+
+    // 每日一句名言
+    function switchChineseFamous() {
+        var random = Math.round(Math.random() * 224)
+        document.getElementById("chinasfamous").innerText = Chinasfamous[random];
+    }
+
+    // 日期
+    function init() {
+        // 公历日期
+        document.getElementById("date").innerText = getDate().Format("yyyy年M月dd日 星期w");
+
+        // 农历日期
+        var chineseDate = calendar.solar2lunar();
+        document.getElementById("chineseDate").innerText =
+            chineseDate.gzYear + " " + chineseDate.Animal + "年 " + chineseDate.IMonthCn + chineseDate.IDayCn + "日";
+        // 每日一句名言
+        switchChineseFamous();
+    }
+
+    init();
+
+    // 时间
+    var time = getDate().Format("HH:mm");
+    document.getElementById("time").innerText = time;
+    var day = getDate().getDay();
+
+    // 每秒执行一次
+    setInterval(function () {
+        var newTime = getDate().Format("HH:mm");
+        var newDay = getDate().getDay();
+
+        // 刷新时间
+        if (time !== newTime) {
+            time = newTime;
+            document.getElementById("time").innerText = newTime;
+        }
+
+        // 刷新日期
+        if (day !== newDay) {
+            day = newDay;
+            init();
+            getWeather();
+        }
+    }, 1000);
+
+    // 从url获取城市，默认北京
+    var cityName = getUrlParam("city");
+    var locationId = "101010100";
+    if (cityName != null && cityName !== "") {
+        // 获取城市ID
+        locationId = cityName;
+        getQweather("https://geoapi.qweather.com/v2/city/lookup", function (data) {
+            document.getElementById("cityName").innerText = data.location[0].name;
+            locationId = data.location[0].id;
+            getWeather();
+        });
+    } else {
+        document.getElementById("cityName").innerText = "北京";
+        getWeather();
+    }
+
+    // 和风天气接口
+    function getQweather(url, fun) {
+        var key = getUrlParam("key");
+        if (key == null || key === '') {
+            key = "dd6b1cbae86b475ab2ab34c22c9a3430";
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url + "?location=" + locationId + "&key=" + key, true);
+        xhr.send(null);
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                fun(JSON.parse(xhr.response));
+            }
+        }
+    }
+
+    function getWeather() {
+        // 天气
+        getQweather("https://devapi.qweather.com/v7/weather/now", function (data) {
+            document.getElementById("temp").innerText = data.now.temp + "°";
+            document.getElementById("tempText").innerText = data.now.text;
+            document.getElementById("tempIcon").className = "qi-" + data.now.icon;
+            document.getElementById("updateTime").innerText = data.updateTime.substring(11, 16);
+            document.getElementById("weather-list").innerHTML =
+                '<div class="weather-item">' +
+                '    <p>' + data.now.windScale + '级</p>' +
+                '    <p>' + data.now.windDir + '</p>' +
+                '</div>' +
+                '<div class="weather-item">' +
+                '    <p>' + data.now.humidity + '%</p>' +
+                '    <p>相对湿度</p>' +
+                '</div>' +
+                '<div class="weather-item">' +
+                '    <p>' + data.now.feelsLike + '℃</p>' +
+                '    <p>体感温度</p>' +
+                '</div>';
+
+            // 未来3天
+            getQweather("https://devapi.qweather.com/v7/weather/3d", function (data) {
+                document.getElementById("todayTemp").innerText = data.daily[0].tempMin + ' ~ ' + data.daily[0].tempMax + '℃';
+                document.getElementById("weather-list").innerHTML +=
+                    /*'<div class="weather-item">' +
+                    '    <p>' + data.daily[0].uvIndex + '</p>' +
+                    '    <p>紫外线</p>' +
+                    '</div>' +*/
+                    '<div class="weather-item">' +
+                    '    <p>' + data.daily[0].sunrise + '</p>' +
+                    '    <p>日出</p>' +
+                    '</div>' +
+                    '<div class="weather-item">' +
+                    '    <p>' + data.daily[0].sunset + '</p>' +
+                    '    <p>日落</p>' +
+                    '</div>';
+
+                var width = (document.documentElement.clientHeight || document.body.clientHeight) / 7;
+                var items = document.getElementsByClassName("weather-item");
+                for (var i = 0; i < items.length; i++) {
+                    items[i].style.width = width + 'px';
+                }
+
+            });
+        });
+
+        // 空气
+        getQweather("https://devapi.qweather.com/v7/air/now", function (data) {
+            document.getElementById("pm2p5").innerText = data.now.pm2p5;
+            document.getElementById("category").innerText = data.now.category;
+        });
+    }
+
+    // 显示天气更新时间
+    function showUpdateTime() {
+        if (document.getElementById("updateTime").style.display === "block") {
+            document.getElementById("updateTime").style.display = "none";
+        } else {
+            document.getElementById("updateTime").style.display = "block";
+        }
+    }
+
+    // 每15分钟更新一次天气
+    setInterval(function () {
+        getWeather();
+        switchChineseFamous();
+    }, 1000 * 60 * 15)
+</script>
+</body>
+</html>

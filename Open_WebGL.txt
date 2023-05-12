@@ -1,0 +1,55 @@
+1、哪些浏览器支持WebGL
+ 
+要运行WebGL，你必须有一个支持它的浏览器，比如：
+Google Chrome 9+
+Mozilla Firefox 4+
+Safari 5.1+（仅限于Mac OS X操作系统，不包括Windows操作系统；那么这种情况下必须强制开启WebGL支持，请参考下文）
+Opera Next 即 Opera 12 alpha及以上版本IE9+但是IE并不支持WebGL，不过你可以通过下载并安装IEWebGL这个插件，或者Google Chrome Framework来运行一些WebGL应用。
+ 
+同时，你还需要一块好的显卡，并安装了最新的显卡驱动；这只是使你能够运行WebGL的基本要求，如果想要在一些复杂的应用中保证显示效果，那你需要一块更好的显卡。
+ 
+如果你的显卡非常老旧，或者是板载的集成显卡，那么你需要在浏览器中强制开启WebGL支持；另外因为其他的一些原因（比如你的操作系统是Windows XP），在正常安装以上浏览器之后还是不能运行WebGL，那你最好也强制开启WebGL支持。开启方法如下：
+ 
+2、Google Chrome开启方法
+
+我们需要为Chrome加入一些启动参数，以下具体操作步骤以Windows操作系统为例，请Linux用户自行设置。
+ 
+Chrome浏览器的用户请找到Chrome浏览器的快捷方式，如果没有就创建一个快捷方式（右键点击chrome.exe，选择“创建快捷方式”或者“发送到”→“桌面快捷方式”），右键点击快捷方式，选择属性。
+在目标框内，双引号的后边，加入以下内容：
+
+--enable-webgl --ignore-gpu-blacklist --allow-file-access-from-files
+
+关闭目前开启的所有Chrome窗口，然后用此快捷方式启动Chrome浏览器，其中： 
+表示开启WebGL支持：
+--enable-webgl
+
+表示忽略GPU黑名单，也就是说有一些显卡GPU因为过于陈旧等原因，不建议运行WebGL，这个参数可以让浏览器忽略这个黑名单，强制运行WebGL：
+--ignore-gpu-blacklist
+
+表示允许从本地载入资源，如果你不是WebGL的开发者，不需要开发调试WebGL，只是想要看一下WebGL的Demo，那你可以不添加这个参数：
+--allow-file-access-from-files
+
+
+3、Mozilla Firefox开启方法
+
+Firefox的用户请在浏览器的地址栏输入“about:config”，回车后：
+ 
+1、在过滤器（filter）中搜索“webgl”
+ 将webgl.force-enabled设置为true
+ 将webgl.disabled设置为false
+ 
+2、在过滤器（filter）中搜索“security.fileuri.strict_origin_policy”
+ 将security.fileuri.strict_origin_policy设置为false
+ 
+关闭目前开启的所有Firefox窗口，然后重新启动Firefox。
+ 
+其中前两个设置是强制开启WebGL支持，最后一个security.fileuri.strict_origin_policy的设置是允许从本地载入资源，如果你不是WebGL的开发者，不需要开发调试WebGL，只是想要看一下WebGL的Demo，那你可以不设置此项。
+ 
+4、Safari浏览器开启方法
+
+菜单中找到“属性”或“偏好设置”→“高级”，选中“显示开发菜单”，然后到“开发”菜单，选中“开启WebGL”。
+ 
+5、那么如何判断我的浏览器是否支持WebGL呢？
+
+请访问：如何判断我目前的浏览器是否支持WebGL，如果显示Yay，说明你的浏览器已经支持WebGL了，否则显示Nay。
+http://www.w3cfuns.com/static/image/cm/html5/demo.html?webName=WebGL%20Bookcase&url=http://doesmybrowsersupportwebgl.com/

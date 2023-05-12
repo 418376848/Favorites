@@ -1,0 +1,12 @@
+{
+"companyName": "The Lonely Golem",
+"productName": "Reactor Redux",
+"dataUrl": "WebGL 2.2c.data.unityweb",
+"wasmCodeUrl": "WebGL 2.2c.wasm.code.unityweb",
+"wasmFrameworkUrl": "WebGL 2.2c.wasm.framework.unityweb",
+"TOTAL_MEMORY": 536870912,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
