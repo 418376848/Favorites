@@ -12988,6 +12988,7 @@ var Inventory = {
         var sellToggle = sellToggleChart[item.autoSell];
         var procRate = this.craftChance(item);
         if (item.type === "Trinkets") roll = 0;
+        roll = 0;
         if (roll < procRate.epic) {
             if (sellToggle < 4) {
                 this.addToInventory("".concat(id, "_3_0_0_0"), 1, skipAnimation);
